@@ -9,6 +9,7 @@
 package br.com.romero.pizzaria.telas;
 
 import br.com.romero.pizzaria.dal.ModuloConexao;
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,15 +23,27 @@ public class TelaLogin extends javax.swing.JFrame {
     ResultSet rs = null;
 
     public void logar() {
-        String sql = "SELECT * FROM tblogin where usuario=? and senha= md5(?)";
+        String query = "select l.idlogin,l.usuario,l.senha,l.perfil,f.nomefun,f.idlogin from tblogin l inner join tbfuncionario f on l.idlogin=f.idlogin where usuario=? and senha=md5(?);";
         try {
-            pst = conexao.prepareStatement(sql);
+            pst = conexao.prepareStatement(query);
             pst.setString(1, txtUsuario.getText());
             pst.setString(2, txtSenha.getText());
             rs = pst.executeQuery();
             if (rs.next()) {
                 TelaPrincipal principal = new TelaPrincipal();
                 principal.setVisible(true);
+                String perfil = rs.getString(4);
+                String nomefun = rs.getString(5);
+                if (perfil.equals("admin")) {
+                    TelaPrincipal.menRel.setEnabled(true);
+                    TelaPrincipal.menCadFun.setEnabled(true);
+                    Color customColor = new Color(66, 165, 245);
+                    TelaPrincipal.lblFun.setForeground(customColor);
+                }
+                TelaPrincipal.lblFun.setText(nomefun);
+                principal.setTitle("Pizzaria Romero - " + nomefun);
+                this.dispose();
+                conexao.close();
             } else {
                 JOptionPane.showMessageDialog(null, "Usuário e/ou senha inválido(s)");
             }
@@ -49,7 +62,6 @@ public class TelaLogin extends javax.swing.JFrame {
             btnLogin.setEnabled(true);
         } else {
             lblStatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/romero/pizzaria/imagens/database-down.png")));
-             btnLogin.setEnabled(false);
         }
     }
 
@@ -68,18 +80,24 @@ public class TelaLogin extends javax.swing.JFrame {
         setTitle("Pizzaria Romero - Autenticação");
         setResizable(false);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel1.setText("Usuário");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel2.setText("Senha");
 
+        txtUsuario.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+
+        btnLogin.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
         btnLogin.setText("Entrar");
+        btnLogin.setEnabled(false);
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLoginActionPerformed(evt);
             }
         });
+
+        txtSenha.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
 
         lblStatus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/romero/pizzaria/imagens/database-down.png"))); // NOI18N
 
@@ -107,7 +125,7 @@ public class TelaLogin extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(35, Short.MAX_VALUE)
+                .addContainerGap(31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
