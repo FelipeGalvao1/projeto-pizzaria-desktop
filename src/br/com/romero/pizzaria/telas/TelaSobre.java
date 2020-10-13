@@ -1,9 +1,3 @@
-/**
- * @author Felipe Galvão
- * Pizzaria Romero - Sistema Desktop
- * Data de criação: 11/10/2020
- * Versão: v1
- */
 package br.com.romero.pizzaria.telas;
 
 public class TelaSobre extends javax.swing.JFrame {
@@ -79,9 +73,6 @@ public class TelaSobre extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

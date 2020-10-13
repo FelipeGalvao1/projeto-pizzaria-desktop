@@ -5,7 +5,6 @@
  * Versão: v1
  */
 
-/* Esse arquivo é responsável pelo login do funcionário */
 package br.com.romero.pizzaria.telas;
 
 import br.com.romero.pizzaria.dal.ModuloConexao;
