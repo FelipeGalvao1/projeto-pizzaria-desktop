@@ -20,7 +20,7 @@ public class TelaFuncionario extends javax.swing.JInternalFrame {
     }
 
     private void consultar() {
-        String query = "select f.idfuncionario,f.nomefun,f.cpf,f.cargo,f.salario,c.telefone,c.celular,e.tipo,e.logradouro,e.numero,e.complemento,e.bairro,l.usuario,l.perfil from tbfuncionario f inner join tbcontato c on f.idcontato=c.idcontato inner join tbendereco e on f.idendereco=e.idendereco inner join tblogin l on f.idlogin=l.idlogin where idfuncionario=?";
+        String query = "select f.idfuncionario,f.nomefun,f.cpf,f.cargo,f.salario,c.telefone,c.celular,e.tipo,e.logradouro,e.numero,e.complemento,e.bairro,e.cep, l.usuario,l.senha, l.perfil from tbfuncionario f inner join tbcontato c on f.idcontato=c.idcontato inner join tbendereco e on f.idendereco=e.idendereco inner join tblogin l on f.idlogin=l.idlogin where idfuncionario=?";
 
         try {
             pst = conexao.prepareStatement(query);
@@ -39,9 +39,10 @@ public class TelaFuncionario extends javax.swing.JInternalFrame {
                 txtFunNum.setText(rs.getString(10));
                 txtFunCom.setText(rs.getString(11));
                 txtFunBai.setText(rs.getString(12));
-                txtFunUsu.setText(rs.getString(13));
+                txtFunCep.setText(rs.getString(13));
+                txtFunUsu.setText(rs.getString(14));
                 txtFunSen.setText(null);
-                cboFunPer.setSelectedItem(rs.getString(14));
+                cboFunPer.setSelectedItem(rs.getString(16));
 
             } else {
                 JOptionPane.showMessageDialog(null, "Funcionário não cadastrado");
@@ -56,6 +57,7 @@ public class TelaFuncionario extends javax.swing.JInternalFrame {
                 txtFunNum.setText(null);
                 txtFunCom.setText(null);
                 txtFunBai.setText(null);
+                txtFunCep.setText(null);
                 txtFunUsu.setText(null);
                 txtFunSen.setText(null);
                 cboFunPer.setSelectedItem("user");
@@ -94,7 +96,6 @@ public class TelaFuncionario extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         txtFunLog = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        txtFunNum = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         txtFunCom = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
@@ -106,6 +107,9 @@ public class TelaFuncionario extends javax.swing.JInternalFrame {
         cboFunPer = new javax.swing.JComboBox<>();
         txtFunSen = new javax.swing.JPasswordField();
         jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        txtFunNum = new javax.swing.JTextField();
+        txtFunCep = new javax.swing.JFormattedTextField();
         jPanel1 = new javax.swing.JPanel();
         btnUpd = new javax.swing.JButton();
         btnRea = new javax.swing.JButton();
@@ -115,7 +119,6 @@ public class TelaFuncionario extends javax.swing.JInternalFrame {
         setClosable(true);
         setForeground(java.awt.Color.black);
         setIconifiable(true);
-        setMaximizable(true);
         setTitle("Funcionários");
         setMaximumSize(new java.awt.Dimension(890, 600));
         setMinimumSize(new java.awt.Dimension(890, 600));
@@ -179,9 +182,7 @@ public class TelaFuncionario extends javax.swing.JInternalFrame {
         txtFunLog.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
 
         jLabel10.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jLabel10.setText("Nº");
-
-        txtFunNum.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel10.setText("CEP");
 
         jLabel12.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(153, 153, 153));
@@ -215,6 +216,17 @@ public class TelaFuncionario extends javax.swing.JInternalFrame {
         jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/romero/pizzaria/imagens/alert.png"))); // NOI18N
         jLabel16.setText("Campo não obrigátorio");
 
+        jLabel17.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jLabel17.setText("Nº");
+
+        txtFunNum.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+
+        try {
+            txtFunCep.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-###")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
         javax.swing.GroupLayout painelLayout = new javax.swing.GroupLayout(painel);
         painel.setLayout(painelLayout);
         painelLayout.setHorizontalGroup(
@@ -230,57 +242,65 @@ public class TelaFuncionario extends javax.swing.JInternalFrame {
                                     .addComponent(jLabel10)
                                     .addComponent(jLabel14))
                                 .addGap(29, 29, 29)
+                                .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtFunUsu)
+                                    .addComponent(cboFunTip, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtFunCep, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, painelLayout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(21, 21, 21)
                                 .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtFunUsu, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cboFunTip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtFunNum, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, painelLayout.createSequentialGroup()
-                                    .addComponent(jLabel6)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtFunTel, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(txtFunCar, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(txtFunCar)
+                                    .addComponent(txtFunTel))))
                         .addGap(69, 69, 69)
                         .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel12)
-                            .addComponent(jLabel8)
                             .addComponent(jLabel7)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel15))
+                            .addComponent(jLabel15)
+                            .addComponent(jLabel8))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtFunLog, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtFunSal, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtFunCel, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFunLog, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(painelLayout.createSequentialGroup()
-                                .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtFunCom, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
-                                    .addComponent(txtFunSen))
-                                .addGap(18, 18, 18)
-                                .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel13)
-                                    .addComponent(jLabel11))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cboFunPer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtFunBai, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addComponent(jLabel2)
+                            .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(painelLayout.createSequentialGroup()
+                                    .addComponent(jLabel17)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtFunNum, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(painelLayout.createSequentialGroup()
+                                    .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(txtFunCom, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                                        .addComponent(txtFunSen))
+                                    .addGap(18, 18, 18)
+                                    .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel13)
+                                        .addComponent(jLabel11))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(cboFunPer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtFunBai, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(painelLayout.createSequentialGroup()
                         .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
                             .addComponent(jLabel1))
                         .addGap(36, 36, 36)
                         .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(painelLayout.createSequentialGroup()
-                                .addComponent(txtFunId, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelLayout.createSequentialGroup()
+                                .addGap(2, 2, 2)
+                                .addComponent(txtFunId, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel16))
                             .addGroup(painelLayout.createSequentialGroup()
-                                .addComponent(txtFunNome, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addGap(390, 390, 390)
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtFunCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtFunCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(painelLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(41, 41, 41)
+                        .addComponent(txtFunNome, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(64, Short.MAX_VALUE))
         );
         painelLayout.setVerticalGroup(
@@ -314,15 +334,18 @@ public class TelaFuncionario extends javax.swing.JInternalFrame {
                     .addComponent(jLabel9)
                     .addComponent(cboFunTip, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(txtFunLog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFunLog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel17)
+                        .addComponent(txtFunNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(txtFunNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12)
                     .addComponent(txtFunCom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtFunBai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13))
+                    .addComponent(jLabel13)
+                    .addComponent(txtFunCep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
@@ -400,10 +423,10 @@ public class TelaFuncionario extends javax.swing.JInternalFrame {
                 .addComponent(painel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
 
-        setBounds(0, 0, 949, 612);
+        setBounds(0, 0, 949, 655);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnReaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReaActionPerformed
@@ -426,6 +449,7 @@ public class TelaFuncionario extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -439,6 +463,7 @@ public class TelaFuncionario extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtFunBai;
     private javax.swing.JTextField txtFunCar;
     private javax.swing.JTextField txtFunCel;
+    private javax.swing.JFormattedTextField txtFunCep;
     private javax.swing.JTextField txtFunCom;
     private javax.swing.JFormattedTextField txtFunCpf;
     private javax.swing.JTextField txtFunId;
